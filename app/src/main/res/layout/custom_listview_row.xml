@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/custom_img_poster"
+        android:layout_width="101dp"
+        android:layout_height="101dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@color/phase_three" />
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        app:layout_constraintStart_toEndOf="@+id/custom_img_poster"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical">
+        
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/TextViewMovies.Bold"
+            android:layout_marginBottom="8dp"
+            android:textSize="17sp"
+            android:fontFamily="@font/quantico"
+            tools:text="@string/movie_title" />
+        
+        <TextView
+            android:id="@+id/tv_year"
+            style="@style/TextViewMovies"
+            android:textSize="13sp"
+            tools:text="@string/year" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

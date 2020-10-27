@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    
+    <item
+        android:id="@+id/action_search"
+        android:title="@string/search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom" />
+    
+    <group android:id="@+id/listview_menu_items">
+        <item
+            android:id="@+id/action_listview"
+            android:title="@string/listview"
+            app:showAsAction="never" />
+        
+        <item
+            android:id="@+id/action_custom_listview"
+            android:title="@string/custom_listview"
+            app:showAsAction="never" />
+    </group>
+    
+    <group android:id="@+id/recyclerview_menu_items">
+        <item
+            android:id="@+id/action_list"
+            android:title="@string/list"
+            app:showAsAction="never" />
+        
+        <item
+            android:id="@+id/action_grid"
+            android:title="@string/grid"
+            app:showAsAction="never" />
+        
+        <item
+            android:id="@+id/action_cardview"
+            android:title="@string/cardview"
+            app:showAsAction="never" />
+    </group>
+    
+    <group android:id="@+id/about_menu_item">
+        <item
+            android:id="@+id/action_about"
+            android:title="@string/about"
+            app:showAsAction="never" />
+    </group></menu>

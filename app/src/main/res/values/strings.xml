@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Marvel Cinematic Universe</string>
+    <string name="sort_by">Sort by:</string>
+    <string name="movie_title">Movie Title</string>
+    <string name="year">Year</string>
+    <string name="details">MPAA rating | runtime | genre | release date</string>
+    <string name="director">Director(s):</string>
+    <string name="stars">Stars:</string>
+    <string name="russo_brothers">Anthony Russo &amp; Joe Russo</string>
+    <string name="rdj">Robert Downey Jr.</string>
+    <string name="synopsis">Synopsis</string>
+    <string name="synopsis_placeholder">Somehing happened.</string>
+    <string name="chronological_index">Chronological Index: %1$s</string>
+    <string name="phase">Phase %1$s</string>
+    <string name="number">#</string>
+    <string name="movie_poster">Movie Poster</string>
+    <string name="list">RecyclerView List</string>
+    <string name="grid">RecyclerView Grid</string>
+    <string name="about">About</string>
+    <string name="search">search</string>
+    <string name="cardview">RecyclerView CardView</string>
+    <string name="listview">ListView</string>
+    <string name="custom_listview">Custom ListView</string>
+    <string name="name">Lukman Hakim</string>
+    <string name="email">lukman.hakim@students.amikom.ac.id</string>
+    <string name="university">University of AMIKOM Yogyakarta</string>
+    <string name="informatics">Bachelor of Informatics</string>
+    <string name="nim">20.21.1491</string>
+    
+    <string-array name="sorter">
+        <item>release date</item>
+        <item>title</item>
+        <item>chronological</item>
+    </string-array>
+</resources>

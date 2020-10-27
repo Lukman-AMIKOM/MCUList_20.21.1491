@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".AboutActivity">
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_profile_photo"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:src="@drawable/img_photo_profile"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.2" />
+        
+        <LinearLayout
+            android:id="@+id/layout_profile"
+            style="@style/LinearLayoutAbout"
+            android:layout_marginTop="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/img_profile_photo">
+            
+            <TextView
+                style="@style/TextViewAbout.Name"
+                android:text="@string/name"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+            
+            <TextView
+                style="@style/TextViewAbout"
+                android:layout_marginBottom="30dp"
+                android:text="@string/email" />
+        </LinearLayout>
+    
+        <LinearLayout
+            style="@style/LinearLayoutAbout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_profile"
+            app:layout_constraintVertical_bias="0.8">
+        
+            <TextView
+                style="@style/TextViewAbout.SchoolInfo"
+                android:text="@string/informatics" />
+        
+            <TextView
+                style="@style/TextViewAbout.SchoolInfo"
+                android:text="@string/nim" />
+        
+            <TextView
+                style="@style/TextViewAbout.SchoolInfo"
+                android:text="@string/university" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
