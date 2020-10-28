@@ -31,9 +31,6 @@ public class Movie implements Parcelable {
         this.chronologicalIndex = chronologicalIndex;
         this.phase = phase;
         this.isFavorite = 0;
-//        System.out.println("Movie Object Created: " + poster + ", " +
-//                title + ", " + year + ", " + details + ", " + director + ", " +
-//                stars + ", " + synopsis);
     }
     
     protected Movie(Parcel in) {
@@ -61,6 +58,26 @@ public class Movie implements Parcelable {
             return new Movie[size];
         }
     };
+    
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(poster);
+        dest.writeString(title);
+        dest.writeString(year);
+        dest.writeString(details);
+        dest.writeString(releaseDate);
+        dest.writeString(director);
+        dest.writeString(stars);
+        dest.writeString(synopsis);
+        dest.writeInt(chronologicalIndex);
+        dest.writeString(phase);
+        dest.writeInt(isFavorite);
+    }
     
     // Getter and Setter
     public int getPoster() {
@@ -153,25 +170,5 @@ public class Movie implements Parcelable {
     
     public void setFavorite(int favorite) {
         isFavorite = favorite;
-    }
-    
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-    
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(poster);
-        dest.writeString(title);
-        dest.writeString(year);
-        dest.writeString(details);
-        dest.writeString(releaseDate);
-        dest.writeString(director);
-        dest.writeString(stars);
-        dest.writeString(synopsis);
-        dest.writeInt(chronologicalIndex);
-        dest.writeString(phase);
-        dest.writeInt(isFavorite);
     }
 }

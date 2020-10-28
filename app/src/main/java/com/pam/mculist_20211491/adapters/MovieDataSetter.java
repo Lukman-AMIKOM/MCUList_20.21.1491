@@ -32,11 +32,6 @@ public class MovieDataSetter {
             @Override
             public void onClick(View v) {
                 setFav(movie.isFavorite() == 0 ? imgSelected : imgDefault, movie.isFavorite() == 0 ? 1 : 0);
-//                if (movie.isFavorite() == 0) {
-//                    setFav(imgSelected, 1);
-//                } else {
-//                    setFav(imgDefault, 0);
-//                }
             }
         });
     }

@@ -251,10 +251,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                             Date releaseDate2 = sdf.parse(strDate2);
                             
                             if (releaseDate1.before(releaseDate2)) {
-//                                System.out.println(sdf.format(releaseDate1) + " is BEFORE " + sdf.format(releaseDate2));
                                 return -1;
                             } else {
-//                                System.out.println(sdf.format(releaseDate1) + " is AFTER " + sdf.format(releaseDate2));
                                 return 1;
                             }
                         } catch (ParseException e) {
