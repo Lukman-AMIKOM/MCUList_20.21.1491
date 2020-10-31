@@ -24,8 +24,7 @@ public class MovieDataSetter {
         imgDefault = holder.itemView.getResources().getDrawable(R.drawable.favorite_default);
         imgSelected = holder.itemView.getResources().getDrawable(R.drawable.favorite_selected);
         
-        setPoster();
-        setText();
+        setData();
         setFav(movie.isFavorite() == 1 ? imgSelected : imgDefault);
         
         holder.imgFavorite.setOnClickListener(new View.OnClickListener() {
@@ -36,14 +35,12 @@ public class MovieDataSetter {
         });
     }
     
-    private void setPoster() {
+    private void setData() {
         Glide.with(holder.itemView.getContext())
                 .load(movie.getPoster())
                 .apply(new RequestOptions().override(101, 150))
                 .into(holder.imgPoster);
-    }
-    
-    private void setText() {
+//        holder.imgPoster.setImageResource(movie.getPoster()); // cara alternatif untuk load image ke layout menggunakan fitur built-in dari Android SDK
         holder.tvTitle.setText(movie.getTitle());
         holder.tvYear.setText(movie.getYear());
         holder.tvDetails.setText(movie.getDetails());

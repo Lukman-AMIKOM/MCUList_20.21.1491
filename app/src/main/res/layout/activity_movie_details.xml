@@ -27,9 +27,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_marginTop="6dp"
-            >
+            android:layout_weight="1">
             
             <TextView
                 android:id="@+id/tv_movie_synopsis"
@@ -40,21 +39,21 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingTop="10dp">
             
             <TextView
                 android:id="@+id/tv_chronological_index"
                 style="@style/TextViewMovies.Bold.Details"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 tools:text="@string/chronological_index" />
             
             <TextView
                 android:id="@+id/tv_phase"
                 style="@style/TextViewMovies.Bold.Details"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 tools:text="@string/phase" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
     
@@ -130,7 +131,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             spanString.setSpan(new RelativeSizeSpan(0.8f), 0, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             item.setTitle(spanString);
         }
-//
+        
+        // Search Feature masih dalam pengembangan.
 //        final MenuItem searchItem = menu.findItem(R.id.action_search);
 //        final SearchView searchView = (SearchView) searchItem.getActionView();
 //        searchView.setOnQueryTextListener(this);
@@ -250,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                             Date releaseDate1 = sdf.parse(strDate1);
                             Date releaseDate2 = sdf.parse(strDate2);
                             
-                            if (releaseDate1.before(releaseDate2)) {
+                            if (Objects.requireNonNull(releaseDate1).before(releaseDate2)) {
                                 return -1;
                             } else {
                                 return 1;
@@ -281,7 +283,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 return 0;
             }
         });
-        rvMovies.getAdapter().notifyDataSetChanged();
+        Objects.requireNonNull(rvMovies.getAdapter()).notifyDataSetChanged();
     }
     
     public void setMode(int selectedMode) {
