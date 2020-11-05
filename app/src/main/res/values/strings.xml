@@ -26,6 +26,10 @@
     <string name="university">University of AMIKOM Yogyakarta</string>
     <string name="informatics">Bachelor of Informatics</string>
     <string name="nim">20.21.1491</string>
+    <string name="splash_screen_mcu_logo">Splash Screen MCU Logo</string>
+    <string name="list_">List</string>
+    <string name="grid_">Grid</string>
+    <string name="cardview_">CardView</string>
     
     <string-array name="sorter">
         <item>release date</item>

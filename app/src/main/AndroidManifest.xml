@@ -4,23 +4,27 @@
     
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_shield"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_shield_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MCUList_20211491">
-        <activity android:name=".CustomListViewActivity"></activity>
-        <activity android:name=".MovieDetailsActivity" />
-        <activity android:name=".ListViewActivity" />
-        <activity android:name=".AboutActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
     
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    
+        <activity
+            android:name=".FullscreenPosterActivity"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+        <activity android:name=".CustomListViewActivity" />
+        <activity android:name=".MovieDetailsActivity" />
+        <activity android:name=".ListViewActivity" />
+        <activity android:name=".AboutActivity" />
+        <activity android:name=".MainActivity" />
+        
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

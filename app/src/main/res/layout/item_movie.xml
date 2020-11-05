@@ -9,6 +9,7 @@
         android:layout_height="150dp"
         android:layout_marginEnd="16dp"
         android:contentDescription="@string/movie_poster"
+        android:scaleType="fitXY"
         tools:src="@android:color/darker_gray" />
     
     <LinearLayout
@@ -19,8 +20,8 @@
         <TextView
             android:id="@+id/tv_movie_title"
             style="@style/TextViewMovies.Bold"
-            android:paddingRight="10dp"
             android:fontFamily="@font/quantico"
+            android:paddingEnd="10dp"
             android:textColor="#0022ba"
             android:textSize="16sp"
             tools:text="@string/movie_title" />
@@ -60,11 +61,4 @@
                 tools:text="@string/rdj" />
         </LinearLayout>
     </LinearLayout>
-    
-    <!--    <de.hdodenhof.circleimageview.CircleImageView-->
-    <!--        android:id="@+id/movie_index_number"-->
-    <!--        android:layout_width="30dp"-->
-    <!--        android:layout_height="30dp"-->
-    <!--        android:layout_gravity="end"-->
-    <!--        android:src="@color/cardview_dark_background"/>-->
 </LinearLayout>

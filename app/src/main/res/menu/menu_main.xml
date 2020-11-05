@@ -20,22 +20,22 @@
             app:showAsAction="never" />
     </group>
     
-    <group android:id="@+id/recyclerview_menu_items">
-        <item
-            android:id="@+id/action_list"
-            android:title="@string/list"
-            app:showAsAction="never" />
-        
-        <item
-            android:id="@+id/action_grid"
-            android:title="@string/grid"
-            app:showAsAction="never" />
-        
-        <item
-            android:id="@+id/action_cardview"
-            android:title="@string/cardview"
-            app:showAsAction="never" />
-    </group>
+<!--    <group android:id="@+id/recyclerview_menu_items">-->
+<!--        <item-->
+<!--            android:id="@+id/action_list"-->
+<!--            android:title="@string/list"-->
+<!--            app:showAsAction="never" />-->
+<!--        -->
+<!--        <item-->
+<!--            android:id="@+id/action_grid"-->
+<!--            android:title="@string/grid"-->
+<!--            app:showAsAction="never" />-->
+<!--        -->
+<!--        <item-->
+<!--            android:id="@+id/action_cardview"-->
+<!--            android:title="@string/cardview"-->
+<!--            app:showAsAction="never" />-->
+<!--    </group>-->
     
     <group android:id="@+id/about_menu_item">
         <item

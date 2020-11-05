@@ -9,13 +9,13 @@
     
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_profile_photo"
             android:layout_width="180dp"
             android:layout_height="180dp"
-            android:src="@drawable/img_photo_profile"
+            tools:src="@drawable/img_profile_photo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

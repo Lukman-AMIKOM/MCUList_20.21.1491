@@ -2,11 +2,13 @@ package com.pam.mculist_20211491;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,29 +25,35 @@ public class MovieDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_details);
         
         Intent intent = getIntent();
-        Movie movie = (Movie) intent.getParcelableExtra(EXTRA_MOVIE_OBJECT);
+        Movie movie = intent.getParcelableExtra(EXTRA_MOVIE_OBJECT);
         
-        int color = R.color.design_default_color_primary;
+        int actionbarBackground = R.drawable.background_actionbar_phase_one;
+        int phaseColor = R.color.text_color;
+        
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle(movie.getTitle() + " (" + movie.getYear() + ")");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             
             switch (movie.getPhase()) {
                 case MoviesData.PHASE_ONE:
-                    color = R.color.phase_one;
+                    actionbarBackground = R.drawable.background_actionbar_phase_one;
+                    phaseColor = R.color.phase_one;
                     break;
                 case MoviesData.PHASE_TWO:
-                    color = R.color.phase_two;
+                    actionbarBackground = R.drawable.background_actionbar_phase_two;
+                    phaseColor = R.color.phase_two;
                     break;
                 case MoviesData.PHASE_THREE:
-                    color = R.color.phase_three;
+                    actionbarBackground = R.drawable.background_actionbar_phase_three;
+                    phaseColor = R.color.phase_three;
                     break;
                 case MoviesData.PHASE_FOUR:
-                    color = R.color.phase_four;
+                    actionbarBackground = R.color.phase_four;
+                    phaseColor = R.color.phase_four;
                     break;
             }
             
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(color)));
+            getSupportActionBar().setBackgroundDrawable(ContextCompat.getDrawable(this, actionbarBackground));
         }
         
         ImageView imgPoster = findViewById(R.id.img_item_poster);
@@ -60,7 +68,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         
         Glide.with(this)
                 .load(movie.getPoster())
-                .apply(new RequestOptions().override(101, 150))
+                .apply(new RequestOptions().override(255, 360))
                 .into(imgPoster);
         tvTitle.setText(movie.getTitle());
         tvYear.setText(movie.getYear());
@@ -70,15 +78,27 @@ public class MovieDetailsActivity extends AppCompatActivity {
         tvSynopsis.setText(movie.getSynopsis());
         tvChronologicalIndex.setText(getString(R.string.chronological_index, String.valueOf(movie.getChronologicalIndex())));
         tvPhase.setText(getString(R.string.phase, movie.getPhase()));
-        tvPhase.setTextColor(getResources().getColor(color));
+        tvPhase.setTextColor(getResources().getColor(phaseColor));
+    
+        TypedValue value = new TypedValue();
+        getTheme().resolveAttribute(android.R.attr.selectableItemBackgroundBorderless, value, true);
+        imgPoster.setBackground(ContextCompat.getDrawable(this, value.resourceId));
+        imgPoster.setClickable(true);
+        imgPoster.setFocusable(true);
+        imgPoster.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent fullscreenPosterActivityIntent = new Intent(MovieDetailsActivity.this, FullscreenPosterActivity.class);
+                fullscreenPosterActivityIntent.putExtra(FullscreenPosterActivity.EXTRA_POSTER_ID, movie.getPoster());
+                startActivity(fullscreenPosterActivityIntent);
+            }
+        });
     }
     
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                break;
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
         }
         return true;
     }

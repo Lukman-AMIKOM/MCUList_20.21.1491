@@ -41,7 +41,7 @@ public class GridMovieAdapter extends RecyclerView.Adapter<GridMovieAdapter.Grid
     public void onBindViewHolder(@NonNull GridViewHolder holder, int position) {
         Glide.with(holder.itemView.getContext())
                 .load(listMovie.get(position).getPoster())
-                .apply(new RequestOptions().override(101, 150))
+                .apply(new RequestOptions().override(255, 360))
                 .into(holder.imgPoster);
         
         holder.itemView.setOnClickListener(new View.OnClickListener() {

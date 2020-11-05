@@ -319,7 +319,7 @@ public class MoviesData {
                     CHRONOLOGICAL_INDEX + 17 +
                     PHASE + PHASE_THREE + QUOTE + CLOSING_BRACKET,
             "{" +
-                    POSTER + R.drawable.poster_avengers_infinity_war_main +
+                    POSTER + R.drawable.poster_avengers_infinity_war_thanos +
                     TITLE + "Avengers: Infinity War" +
                     YEAR + "2018" +
                     DETAILS + "PG-13 | 2h 29min | Action, Adventure, Sci-Fi | " +
@@ -395,10 +395,10 @@ public class MoviesData {
     static ArrayList<Movie> getListData() {
         System.out.println("--New Array Created--");
         ArrayList<Movie> list = new ArrayList<>();
-        
-        for (int i = 0; i < movies.length; i++) {
+    
+        for (String s : movies) {
             try {
-                JSONObject obj = new JSONObject(movies[i]);
+                JSONObject obj = new JSONObject(s);
                 Movie movie = new Movie(
                         obj.getInt(poster),
                         obj.getString(title),
@@ -411,7 +411,7 @@ public class MoviesData {
                         obj.getInt(chronologicalIndex),
                         obj.getString(phase)
                 );
-                
+            
                 list.add(movie);
             } catch (JSONException e) {
                 e.printStackTrace();

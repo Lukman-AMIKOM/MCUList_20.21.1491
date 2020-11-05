@@ -1,6 +1,7 @@
 package com.pam.mculist_20211491.adapters;
 
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
@@ -38,7 +39,7 @@ public class MovieDataSetter {
     private void setData() {
         Glide.with(holder.itemView.getContext())
                 .load(movie.getPoster())
-                .apply(new RequestOptions().override(101, 150))
+                .apply(new RequestOptions().override(255, 360))
                 .into(holder.imgPoster);
 //        holder.imgPoster.setImageResource(movie.getPoster()); // cara alternatif untuk load image ke layout menggunakan fitur built-in dari Android SDK
         holder.tvTitle.setText(movie.getTitle());
@@ -46,6 +47,8 @@ public class MovieDataSetter {
         holder.tvDetails.setText(movie.getDetails());
         holder.tvDirector.setText(movie.getDirector());
         holder.tvStars.setText(movie.getStars());
+        holder.tvStars.setMaxLines(3);
+        holder.tvStars.setEllipsize(TextUtils.TruncateAt.END);
         holder.tvIndex.setText(String.valueOf(index));
     }
     

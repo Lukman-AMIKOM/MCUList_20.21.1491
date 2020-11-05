@@ -2,6 +2,7 @@ package com.pam.mculist_20211491;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.MenuCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -28,6 +28,7 @@ import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.pam.mculist_20211491.adapters.CardViewMovieAdapter;
 import com.pam.mculist_20211491.adapters.GridMovieAdapter;
 import com.pam.mculist_20211491.adapters.ListMovieAdapter;
@@ -41,15 +42,15 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
+public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, BottomNavigationView.OnNavigationItemSelectedListener {
     
     private static final String SORT_BY_DATE = "release date";
     private static final String SORT_BY_TITLE = "title";
     private static final String SORT_BY_CHRONOLOGICAL = "chronological";
     
-    private static final int RECYCLERVIEW_LIST_MODE = R.id.action_list;
-    private static final int RECYCLERVIEW_GRID_MODE = R.id.action_grid;
-    private static final int RECYCLERVIEW_CARDVIEW_MODE = R.id.action_cardview;
+    private static final int RECYCLERVIEW_LIST_MODE = R.id.nav_list;
+    private static final int RECYCLERVIEW_GRID_MODE = R.id.nav_grid;
+    private static final int RECYCLERVIEW_CARDVIEW_MODE = R.id.nav_cardview;
     
     private static final String LIST_INITIALIZATION_STATUS = "list_initialization_status";
     private static final String STATE_LIST = "list";
@@ -60,8 +61,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     
     private TextView tvViewType;
     private Spinner spinnerSort;
-    private String sorter[] = {SORT_BY_DATE, SORT_BY_TITLE, SORT_BY_CHRONOLOGICAL};
+    private final String[] sorter = {SORT_BY_DATE, SORT_BY_TITLE, SORT_BY_CHRONOLOGICAL};
     private ArrayAdapter<String> arrayAdapter;
+    
+    private BottomNavigationView navigationView;
     
     private boolean isListInitialized = false;
     private int selectedMode;
@@ -72,17 +75,20 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         setContentView(R.layout.activity_main);
         
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.actionbar_color)));
+            getSupportActionBar().setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.background_actionbar_main));
         }
+        
+        navigationView = findViewById(R.id.nav_bottom_main);
+        navigationView.setSelectedItemId(R.id.nav_cardview);
+        navigationView.setOnNavigationItemSelectedListener(this);
         
         rvMovies = findViewById(R.id.rv_movies);
         rvMovies.setHasFixedSize(true);
         
         tvViewType = findViewById(R.id.tv_view_type);
-        
-        spinnerSort = findViewById(R.id.spinner_sort);
+    
         arrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_sorter, sorter);
-        //arrayAdapter.setDropDownViewResource(R.layout.spinner_sorter);
+        spinnerSort = findViewById(R.id.spinner_sort);
         spinnerSort.setAdapter(arrayAdapter);
         spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -144,6 +150,12 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         setMode(item.getItemId());
         return super.onOptionsItemSelected(item);
+    }
+    
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        setMode(item.getItemId());
+        return true;
     }
     
     @Override
@@ -294,15 +306,15 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             case R.id.action_custom_listview:
                 showCustomListView();
                 break;
-            case R.id.action_list:
+            case R.id.nav_list:
                 this.selectedMode = RECYCLERVIEW_LIST_MODE;
                 showRecyclerList();
                 break;
-            case R.id.action_grid:
+            case R.id.nav_grid:
                 this.selectedMode = RECYCLERVIEW_GRID_MODE;
                 showRecyclerGrid();
                 break;
-            case R.id.action_cardview:
+            case R.id.nav_cardview:
                 this.selectedMode = RECYCLERVIEW_CARDVIEW_MODE;
                 showRecyclerCardView();
                 break;

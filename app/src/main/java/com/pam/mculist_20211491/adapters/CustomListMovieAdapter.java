@@ -44,7 +44,7 @@ public class CustomListMovieAdapter extends ArrayAdapter<Movie> {
         TextView tvTitle = convertView.findViewById(R.id.tv_title);
         TextView tvYear = convertView.findViewById(R.id.tv_year);
         
-        Glide.with(mContext).load(movie.getPoster()).apply(new RequestOptions().override(101, 101)).into(imgPoster);
+        Glide.with(mContext).load(movie.getPoster()).apply(new RequestOptions().override(255, 360)).into(imgPoster);
         tvTitle.setText(movieTitle);
         tvYear.setText(movieYear);
         
