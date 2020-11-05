@@ -4,9 +4,9 @@
     
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_shield"
+        android:icon="@drawable/ic_shield_logo_bg"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_shield_round"
+        android:roundIcon="@drawable/ic_shield_logo_bg"
         android:supportsRtl="true"
         android:theme="@style/Theme.MCUList_20211491">
         <activity android:name=".SplashScreenActivity">

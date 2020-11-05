@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="end"
@@ -9,7 +10,8 @@
         android:id="@+id/img_favorite"
         android:layout_width="25dp"
         android:layout_height="25dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:clickable="true"
-        android:background="@drawable/ripple_btn_favorite"
-        android:src="@drawable/favorite_default" />
+        android:focusable="true"
+        tools:src="@drawable/ic_favorite_default" />
 </LinearLayout>

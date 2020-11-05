@@ -38,7 +38,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Objects;
 
@@ -62,9 +61,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private TextView tvViewType;
     private Spinner spinnerSort;
     private final String[] sorter = {SORT_BY_DATE, SORT_BY_TITLE, SORT_BY_CHRONOLOGICAL};
-    private ArrayAdapter<String> arrayAdapter;
-    
-    private BottomNavigationView navigationView;
     
     private boolean isListInitialized = false;
     private int selectedMode;
@@ -77,8 +73,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         if (getSupportActionBar() != null) {
             getSupportActionBar().setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.background_actionbar_main));
         }
-        
-        navigationView = findViewById(R.id.nav_bottom_main);
+    
+        BottomNavigationView navigationView = findViewById(R.id.nav_bottom_main);
         navigationView.setSelectedItemId(R.id.nav_cardview);
         navigationView.setOnNavigationItemSelectedListener(this);
         
@@ -87,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         
         tvViewType = findViewById(R.id.tv_view_type);
     
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_sorter, sorter);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_sorter, sorter);
         spinnerSort = findViewById(R.id.spinner_sort);
         spinnerSort.setAdapter(arrayAdapter);
         spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -108,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
         
         if (!isListInitialized) {
-            list.addAll(MoviesData.getListData());
+            list.addAll(MoviesData.getListData(this, R.raw.movies));
             selectedMode = RECYCLERVIEW_CARDVIEW_MODE;
             isListInitialized = true;
         }
@@ -191,7 +187,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         startActivity(customListViewIntent);
     }
     
-    
     private void showRecyclerList() {
         rvMovies.setLayoutManager(new LinearLayoutManager(this));
         ListMovieAdapter listMovieAdapter = new ListMovieAdapter(list);
@@ -249,51 +244,47 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         startActivity(aboutActivityIntent);
     }
     
-    
     private void sortBy(String sorter) {
-        Collections.sort(list, new Comparator<Movie>() {
-            @Override
-            public int compare(Movie movie1, Movie movie2) {
-                switch (sorter) {
-                    case SORT_BY_DATE:
-                        String strDate1 = movie1.getReleaseDate();
-                        String strDate2 = movie2.getReleaseDate();
+        Collections.sort(list, (movie1, movie2) -> {
+            switch (sorter) {
+                case SORT_BY_DATE:
+                    String strDate1 = movie1.getReleaseDate();
+                    String strDate2 = movie2.getReleaseDate();
+                    
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM yyyy");
+                    try {
+                        Date releaseDate1 = sdf.parse(strDate1);
+                        Date releaseDate2 = sdf.parse(strDate2);
                         
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM yyyy");
-                        try {
-                            Date releaseDate1 = sdf.parse(strDate1);
-                            Date releaseDate2 = sdf.parse(strDate2);
-                            
-                            if (Objects.requireNonNull(releaseDate1).before(releaseDate2)) {
-                                return -1;
-                            } else {
-                                return 1;
-                            }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    case SORT_BY_TITLE:
-                        String title1 = movie1.getTitle();
-                        String title2 = movie2.getTitle();
-                        
-                        if (title1.compareToIgnoreCase(title2) < 0) {
+                        if (Objects.requireNonNull(releaseDate1).before(releaseDate2)) {
                             return -1;
                         } else {
                             return 1;
                         }
-                    case SORT_BY_CHRONOLOGICAL:
-                        int chronologicalIndex1 = movie1.getChronologicalIndex();
-                        int chronologicalIndex2 = movie2.getChronologicalIndex();
-                        
-                        if (chronologicalIndex1 < chronologicalIndex2) {
-                            return -1;
-                        } else {
-                            return 1;
-                        }
-                }
-                return 0;
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case SORT_BY_TITLE:
+                    String title1 = movie1.getTitle();
+                    String title2 = movie2.getTitle();
+                    
+                    if (title1.compareToIgnoreCase(title2) < 0) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
+                case SORT_BY_CHRONOLOGICAL:
+                    int chronologicalIndex1 = movie1.getChronologicalIndex();
+                    int chronologicalIndex2 = movie2.getChronologicalIndex();
+                    
+                    if (chronologicalIndex1 < chronologicalIndex2) {
+                        return -1;
+                    } else {
+                        return 1;
+                    }
             }
+            return 0;
         });
         Objects.requireNonNull(rvMovies.getAdapter()).notifyDataSetChanged();
     }

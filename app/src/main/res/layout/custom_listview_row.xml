@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/ripple_item_gridview"
     android:padding="10dp">
     
     <de.hdodenhof.circleimageview.CircleImageView
@@ -13,28 +14,30 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@color/phase_three" />
+        tools:src="@android:color/darker_gray" />
     
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toEndOf="@+id/custom_img_poster"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         android:orientation="vertical">
         
         <TextView
             android:id="@+id/tv_title"
-            style="@style/TextViewMovies.Bold"
+            style="@style/TextViewMovies.Bold.CustomListView"
             android:layout_marginBottom="8dp"
             android:textSize="17sp"
             android:fontFamily="@font/quantico"
+            android:ellipsize="marquee"
             tools:text="@string/movie_title" />
         
         <TextView
             android:id="@+id/tv_year"
-            style="@style/TextViewMovies"
+            style="@style/TextViewMovies.CustomListView"
             android:textSize="13sp"
             tools:text="@string/year" />
     </LinearLayout>

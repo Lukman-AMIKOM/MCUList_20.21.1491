@@ -24,7 +24,8 @@
             android:paddingEnd="10dp"
             android:textColor="#0022ba"
             android:textSize="16sp"
-            tools:text="@string/movie_title" />
+            tools:text="@string/movie_title"
+            tools:ignore="RtlSymmetry" />
         
         <TextView
             android:id="@+id/tv_movie_year"

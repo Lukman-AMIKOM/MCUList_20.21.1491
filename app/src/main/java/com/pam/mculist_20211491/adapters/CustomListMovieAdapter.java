@@ -21,7 +21,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CustomListMovieAdapter extends ArrayAdapter<Movie> {
     
-    private Context mContext;
+    private final Context mContext;
     int mResource;
     
     public CustomListMovieAdapter(@NonNull Context context, int resource, @NonNull List<Movie> objects) {

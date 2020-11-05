@@ -12,7 +12,6 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <!--        <item name="android:textViewStyle">@style/UbuntuTextViewStyle</item>-->
     </style>
     
     <style name="UbuntuTextViewStyle" parent="android:Widget.TextView">
@@ -35,6 +34,14 @@
     <style name="TextViewMovies.Bold">
         <item name="android:textStyle">bold</item>
         <item name="android:layout_marginEnd">8dp</item>
+    </style>
+    
+    <style name="TextViewMovies.CustomListView">
+        <item name="android:textColor">@color/text_color</item>
+    </style>
+    
+    <style name="TextViewMovies.Bold.CustomListView">
+        <item name="android:textColor">@color/text_color</item>
     </style>
     
     <style name="TextViewMovies.Bold.Details">
