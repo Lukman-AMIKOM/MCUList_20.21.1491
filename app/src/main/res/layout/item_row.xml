@@ -9,6 +9,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="11dp" />
     
+<!--    I intentionally put the movie list index number to be about one quarter
+        on top of the edge of the top left corner of the movie poster for my
+        personal aesthetic reason, hence the use of FrameLayout.
+        -->
     <include layout="@layout/tv_index" />
     
     <include layout="@layout/imageview_favorite" />

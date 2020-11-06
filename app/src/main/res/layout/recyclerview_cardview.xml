@@ -10,6 +10,9 @@
     android:focusable="true"
     card_view:cardCornerRadius="7dp">
     
+<!--    Using LinearLayout as an intermediate container because for some reason,
+        I can't get the custom ripple effect to work if I set it on the CardView's
+        attribute directly. -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
