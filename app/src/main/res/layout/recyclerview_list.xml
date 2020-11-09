@@ -5,6 +5,7 @@
     android:background="@drawable/ripple_item_listview"
     android:clickable="true"
     android:focusable="true"
+    android:layout_marginHorizontal="5dp"
     android:padding="5dp">
     
     <include layout="@layout/item_row" />

@@ -16,12 +16,12 @@ public class MovieDataSetter {
     private final Movie movie;
     private final int index;
     
-    private final ListViewHolder holder;
+    private final MovieViewHolder holder;
     
     private final Drawable imgDefault;
     private final Drawable imgSelected;
     
-    public MovieDataSetter(Movie movie, int index, ListViewHolder holder) {
+    public MovieDataSetter(Movie movie, int index, MovieViewHolder holder) {
         this.movie = movie;
         this.index = index;
         this.holder = holder;
@@ -41,7 +41,7 @@ public class MovieDataSetter {
                 .apply(new RequestOptions().override(255, 360))
                 .into(holder.imgPoster);
         holder.tvTitle.setText(movie.getTitle());
-        holder.tvYear.setText(movie.getYear());
+        holder.tvYear.setText(String.valueOf(movie.getYear()));
         holder.tvDetails.setText(movie.getDetails());
         holder.tvDirector.setText(movie.getDirector());
         holder.tvStars.setText(movie.getStars());

@@ -7,6 +7,7 @@ import androidx.core.view.MenuCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.RelativeSizeSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,21 +26,19 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.pam.mculist_20211491.adapters.CardViewMovieAdapter;
-import com.pam.mculist_20211491.adapters.GridMovieAdapter;
-import com.pam.mculist_20211491.adapters.ListMovieAdapter;
+import com.pam.mculist_20211491.adapters.MovieAdapter;
 import com.pam.mculist_20211491.adapters.OnItemClickCallback;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, BottomNavigationView.OnNavigationItemSelectedListener {
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private static final String LIST_INITIALIZATION_STATUS = "list_initialization_status";
     private static final String STATE_LIST = "list";
     private static final String STATE_SELECTED_VIEW = "selected_view";
+    private static final String STATE_SEARCH_QUERY = "state_search";
     
     private RecyclerView rvMovies;
     private ArrayList<Movie> list = new ArrayList<>();
@@ -64,6 +65,62 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     
     private boolean isListInitialized = false;
     private int selectedMode;
+    private MovieAdapter cardMovieAdapter, listMovieAdapter, gridMovieAdapter;
+    
+    private SearchView searchView;
+    private List<Movie> filteredMovieList;
+    private String searchQuery;
+    
+    private final Comparator<Movie> RELEASE_DATE_COMPARATOR = new Comparator<Movie>() {
+        @Override
+        public int compare(Movie movie1, Movie movie2) {
+            String strDate1 = movie1.getReleaseDate();
+            String strDate2 = movie2.getReleaseDate();
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM yyyy");
+            try {
+                Date releaseDate1 = sdf.parse(strDate1);
+                Date releaseDate2 = sdf.parse(strDate2);
+                
+                if (Objects.requireNonNull(releaseDate1).before(releaseDate2)) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        }
+    };
+    
+    private final Comparator<Movie> TITLE_COMPARATOR = new Comparator<Movie>() {
+        @Override
+        public int compare(Movie movie1, Movie movie2) {
+            String title1 = movie1.getTitle();
+            String title2 = movie2.getTitle();
+            
+            if (title1.compareToIgnoreCase(title2) < 0) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+    };
+    
+    private final Comparator<Movie> CHRONOLOGICAL_COMPARATOR = new Comparator<Movie>() {
+        @Override
+        public int compare(Movie movie1, Movie movie2) {
+            int chronologicalIndex1 = movie1.getChronologicalIndex();
+            int chronologicalIndex2 = movie2.getChronologicalIndex();
+            
+            if (chronologicalIndex1 < chronologicalIndex2) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+    };
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         if (getSupportActionBar() != null) {
             getSupportActionBar().setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.background_actionbar_main));
         }
-    
+        
         BottomNavigationView navigationView = findViewById(R.id.nav_bottom_main);
         navigationView.setSelectedItemId(R.id.nav_cardview);
         navigationView.setOnNavigationItemSelectedListener(this);
@@ -82,14 +139,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         rvMovies.setHasFixedSize(true);
         
         tvViewType = findViewById(R.id.tv_view_type);
-    
+        
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.spinner_sorter, sorter);
         spinnerSort = findViewById(R.id.spinner_sort);
         spinnerSort.setAdapter(arrayAdapter);
         spinnerSort.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                sortBy(spinnerSort.getSelectedItem().toString());
+                sortBy(selectedMode, spinnerSort.getSelectedItem().toString());
             }
             
             @Override
@@ -101,6 +158,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             isListInitialized = savedInstanceState.getBoolean(LIST_INITIALIZATION_STATUS);
             selectedMode = savedInstanceState.getInt(STATE_SELECTED_VIEW);
             list = savedInstanceState.getParcelableArrayList(STATE_LIST);
+            searchQuery = savedInstanceState.getString(STATE_SEARCH_QUERY);
         }
         
         if (!isListInitialized) {
@@ -108,8 +166,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             selectedMode = RECYCLERVIEW_CARDVIEW_MODE;
             isListInitialized = true;
         }
-        
-        setMode(selectedMode);
     }
     
     @Override
@@ -118,6 +174,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         outState.putBoolean(LIST_INITIALIZATION_STATUS, isListInitialized);
         outState.putInt(STATE_SELECTED_VIEW, selectedMode);
         outState.putParcelableArrayList(STATE_LIST, list);
+        
+        if (!TextUtils.isEmpty(searchQuery)) {
+            outState.putString(STATE_SEARCH_QUERY, searchQuery);
+        }
     }
     
     @Override
@@ -134,12 +194,20 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
             item.setTitle(spanString);
         }
         
-        // Search Feature masih dalam pengembangan.
-//        final MenuItem searchItem = menu.findItem(R.id.action_search);
-//        final SearchView searchView = (SearchView) searchItem.getActionView();
-//        searchView.setOnQueryTextListener(this);
-//
-        return super.onCreateOptionsMenu(menu);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchView = (SearchView) searchItem.getActionView();
+        searchView.setQueryHint(getString(R.string.search));
+        searchView.setOnQueryTextListener(this);
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        TextView tvSearch = (TextView) searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        tvSearch.setTextSize(12);
+        
+        if (!TextUtils.isEmpty(searchQuery)) {
+            searchView.setQuery(searchQuery, true);
+            searchView.setIconified(false);
+            searchView.clearFocus();
+        }
+        return true;
     }
     
     @Override
@@ -173,6 +241,76 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         return super.dispatchTouchEvent(ev);
     }
     
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+    
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        filteredMovieList = filter(list, newText);
+        searchQuery = newText;
+        
+        switch (selectedMode) {
+            case RECYCLERVIEW_CARDVIEW_MODE:
+                cardMovieAdapter.replaceAll(filteredMovieList);
+                break;
+            case RECYCLERVIEW_GRID_MODE:
+                gridMovieAdapter.replaceAll(filteredMovieList);
+                break;
+            case RECYCLERVIEW_LIST_MODE:
+                listMovieAdapter.replaceAll(filteredMovieList);
+                break;
+        }
+        
+        rvMovies.scrollToPosition(0);
+        return true;
+    }
+    
+    public void setMode(int selectedMode) {
+        switch (selectedMode) {
+            case R.id.action_listview:
+                showListView();
+                break;
+            case R.id.action_custom_listview:
+                showCustomListView();
+                break;
+            case R.id.nav_cardview:
+                this.selectedMode = RECYCLERVIEW_CARDVIEW_MODE;
+                showRecyclerView(MovieAdapter.TYPE_CARD, new LinearLayoutManager(this),
+                        cardMovieAdapter = new MovieAdapter(MovieAdapter.TYPE_CARD, getComparator(spinnerSort.getSelectedItem().toString())));
+                break;
+            case R.id.nav_grid:
+                this.selectedMode = RECYCLERVIEW_GRID_MODE;
+                showRecyclerView(MovieAdapter.TYPE_GRID, new GridLayoutManager(this, 4),
+                        gridMovieAdapter = new MovieAdapter(MovieAdapter.TYPE_GRID, getComparator(spinnerSort.getSelectedItem().toString())));
+                break;
+            case R.id.nav_list:
+                this.selectedMode = RECYCLERVIEW_LIST_MODE;
+                showRecyclerView(MovieAdapter.TYPE_LIST, new LinearLayoutManager(this),
+                        listMovieAdapter = new MovieAdapter(MovieAdapter.TYPE_LIST, getComparator(spinnerSort.getSelectedItem().toString())));
+                break;
+            case R.id.action_about:
+                showAboutActivity();
+                break;
+        }
+    }
+    
+    private void showRecyclerView(String type, RecyclerView.LayoutManager layoutManager, MovieAdapter movieAdapter) {
+        tvViewType.setText(type);
+        
+        rvMovies.setLayoutManager(layoutManager);
+        setList(movieAdapter);
+        rvMovies.setAdapter(movieAdapter);
+        
+        movieAdapter.setOnItemClickCallback(new OnItemClickCallback() {
+            @Override
+            public void onItemClicked(Movie data) {
+                showMovieDetailsActivity(data);
+            }
+        });
+    }
+    
     private void showListView() {
         Intent listViewIntent = new Intent(MainActivity.this, ListViewActivity.class);
         listViewIntent.putExtra(ListViewActivity.EXTRA_MOVIE_LIST, list);
@@ -187,52 +325,19 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         startActivity(customListViewIntent);
     }
     
-    private void showRecyclerList() {
-        rvMovies.setLayoutManager(new LinearLayoutManager(this));
-        ListMovieAdapter listMovieAdapter = new ListMovieAdapter(list);
-        rvMovies.setAdapter(listMovieAdapter);
-        
-        tvViewType.setText(ListMovieAdapter.VIEW_TYPE);
-        
-        listMovieAdapter.setOnItemClickCallback(new OnItemClickCallback() {
-            @Override
-            public void onItemClicked(Movie data) {
-                showMovieDetails(data);
+    private void setList(MovieAdapter movieAdapter) {
+        if (searchView != null) {
+            if (TextUtils.isEmpty(searchView.getQuery().toString())) {
+                movieAdapter.add(list);
+            } else {
+                movieAdapter.replaceAll(filteredMovieList);
             }
-        });
+        } else {
+            movieAdapter.add(list);
+        }
     }
     
-    private void showRecyclerGrid() {
-        rvMovies.setLayoutManager(new GridLayoutManager(this, 4));
-        GridMovieAdapter gridMovieAdapter = new GridMovieAdapter(list);
-        rvMovies.setAdapter(gridMovieAdapter);
-        
-        tvViewType.setText(GridMovieAdapter.VIEW_TYPE);
-        
-        gridMovieAdapter.setOnItemClickCallback(new OnItemClickCallback() {
-            @Override
-            public void onItemClicked(Movie data) {
-                showMovieDetails(data);
-            }
-        });
-    }
-    
-    private void showRecyclerCardView() {
-        rvMovies.setLayoutManager(new LinearLayoutManager(this));
-        CardViewMovieAdapter cardViewMovieAdapter = new CardViewMovieAdapter(list);
-        rvMovies.setAdapter(cardViewMovieAdapter);
-        
-        tvViewType.setText(CardViewMovieAdapter.VIEW_TYPE);
-        
-        cardViewMovieAdapter.setOnItemClickCallback(new OnItemClickCallback() {
-            @Override
-            public void onItemClicked(Movie data) {
-                showMovieDetails(data);
-            }
-        });
-    }
-    
-    private void showMovieDetails(Movie movie) {
+    private void showMovieDetailsActivity(Movie movie) {
         Intent movieDetailsIntent = new Intent(MainActivity.this, MovieDetailsActivity.class);
         movieDetailsIntent.putExtra(MovieDetailsActivity.EXTRA_MOVIE_OBJECT, movie);
         
@@ -244,86 +349,53 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         startActivity(aboutActivityIntent);
     }
     
-    private void sortBy(String sorter) {
-        Collections.sort(list, (movie1, movie2) -> {
-            switch (sorter) {
-                case SORT_BY_DATE:
-                    String strDate1 = movie1.getReleaseDate();
-                    String strDate2 = movie2.getReleaseDate();
-                    
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM yyyy");
-                    try {
-                        Date releaseDate1 = sdf.parse(strDate1);
-                        Date releaseDate2 = sdf.parse(strDate2);
-                        
-                        if (Objects.requireNonNull(releaseDate1).before(releaseDate2)) {
-                            return -1;
-                        } else {
-                            return 1;
-                        }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case SORT_BY_TITLE:
-                    String title1 = movie1.getTitle();
-                    String title2 = movie2.getTitle();
-                    
-                    if (title1.compareToIgnoreCase(title2) < 0) {
-                        return -1;
-                    } else {
-                        return 1;
-                    }
-                case SORT_BY_CHRONOLOGICAL:
-                    int chronologicalIndex1 = movie1.getChronologicalIndex();
-                    int chronologicalIndex2 = movie2.getChronologicalIndex();
-                    
-                    if (chronologicalIndex1 < chronologicalIndex2) {
-                        return -1;
-                    } else {
-                        return 1;
-                    }
-            }
-            return 0;
-        });
-        Objects.requireNonNull(rvMovies.getAdapter()).notifyDataSetChanged();
-    }
-    
-    public void setMode(int selectedMode) {
+    private void sortBy(int selectedMode, String sorter) {
         switch (selectedMode) {
-            case R.id.action_listview:
-                showListView();
+            case RECYCLERVIEW_CARDVIEW_MODE:
+                showRecyclerView(MovieAdapter.TYPE_CARD, new LinearLayoutManager(this),
+                        cardMovieAdapter = new MovieAdapter(MovieAdapter.TYPE_CARD, getComparator(sorter)));
                 break;
-            case R.id.action_custom_listview:
-                showCustomListView();
+            case RECYCLERVIEW_GRID_MODE:
+                showRecyclerView(MovieAdapter.TYPE_GRID, new GridLayoutManager(this, 4),
+                        gridMovieAdapter = new MovieAdapter(MovieAdapter.TYPE_GRID, getComparator(sorter)));
                 break;
-            case R.id.nav_list:
-                this.selectedMode = RECYCLERVIEW_LIST_MODE;
-                showRecyclerList();
-                break;
-            case R.id.nav_grid:
-                this.selectedMode = RECYCLERVIEW_GRID_MODE;
-                showRecyclerGrid();
-                break;
-            case R.id.nav_cardview:
-                this.selectedMode = RECYCLERVIEW_CARDVIEW_MODE;
-                showRecyclerCardView();
-                break;
-            case R.id.action_about:
-                showAboutActivity();
-                break;
-            case R.id.action_search:
+            case RECYCLERVIEW_LIST_MODE:
+                showRecyclerView(MovieAdapter.TYPE_LIST, new LinearLayoutManager(this),
+                        listMovieAdapter = new MovieAdapter(MovieAdapter.TYPE_LIST, getComparator(sorter)));
                 break;
         }
     }
     
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        return false;
+    private Comparator<Movie> getComparator(String sorter) {
+        switch (sorter) {
+            case SORT_BY_DATE:
+                return RELEASE_DATE_COMPARATOR;
+            case SORT_BY_TITLE:
+                return TITLE_COMPARATOR;
+            case SORT_BY_CHRONOLOGICAL:
+                return CHRONOLOGICAL_COMPARATOR;
+        }
+        return null;
     }
     
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        return false;
+    private static List<Movie> filter(List<Movie> movies, String query) {
+        final String lowerCaseQuery = query.toLowerCase();
+        final List<Movie> filteredMovieList = new ArrayList<>();
+        
+        for (Movie movie : movies) {
+            final String title = movie.getTitle().toLowerCase();
+            final String year = String.valueOf(movie.getYear());
+            final String releaseDate = movie.getReleaseDate().toLowerCase();
+            final String director = movie.getDirector().toLowerCase();
+            final String stars = movie.getStars().toLowerCase();
+            
+            if (title.contains(lowerCaseQuery) || year.contains(lowerCaseQuery) ||
+                    releaseDate.contains(lowerCaseQuery) || director.contains(lowerCaseQuery) ||
+                    stars.contains(lowerCaseQuery)) {
+                filteredMovieList.add(movie);
+            }
+        }
+        
+        return filteredMovieList;
     }
 }

@@ -34,9 +34,8 @@ public class CustomListMovieAdapter extends ArrayAdapter<Movie> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         Movie movie = getItem(position);
-        
         String movieTitle = movie.getTitle();
-        String movieYear = movie.getYear();
+        int movieYear = movie.getYear();
         
         convertView = LayoutInflater.from(mContext).inflate(mResource, parent, false);
         
@@ -46,7 +45,7 @@ public class CustomListMovieAdapter extends ArrayAdapter<Movie> {
         
         Glide.with(mContext).load(movie.getPoster()).apply(new RequestOptions().override(255, 360)).into(imgPoster);
         tvTitle.setText(movieTitle);
-        tvYear.setText(movieYear);
+        tvYear.setText(String.valueOf(movieYear));
         
         return convertView;
     }

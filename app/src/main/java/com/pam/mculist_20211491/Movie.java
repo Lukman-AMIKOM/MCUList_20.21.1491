@@ -3,11 +3,13 @@ package com.pam.mculist_20211491;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Objects;
+
 public class Movie implements Parcelable {
     
     private int poster;
     private String title;
-    private String year;
+    private int year;
     private String details;
     private String releaseDate;
     private String director;
@@ -17,7 +19,7 @@ public class Movie implements Parcelable {
     private String phase;
     private int isFavorite;
     
-    public Movie(int poster, String title, String year, String details, String releaseDate,
+    public Movie(int poster, String title, int year, String details, String releaseDate,
                  String director, String stars, String synopsis, int chronologicalIndex,
                  String phase) {
         this.poster = poster;
@@ -36,7 +38,7 @@ public class Movie implements Parcelable {
     protected Movie(Parcel in) {
         poster = in.readInt();
         title = in.readString();
-        year = in.readString();
+        year = in.readInt();
         details = in.readString();
         releaseDate = in.readString();
         director = in.readString();
@@ -68,7 +70,7 @@ public class Movie implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(poster);
         dest.writeString(title);
-        dest.writeString(year);
+        dest.writeInt(year);
         dest.writeString(details);
         dest.writeString(releaseDate);
         dest.writeString(director);
@@ -79,7 +81,21 @@ public class Movie implements Parcelable {
         dest.writeInt(isFavorite);
     }
     
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Movie movie = (Movie) o;
+        return title.equals(movie.title);
+    }
+    
+    @Override
+    public int hashCode() {
+        return Objects.hash(title);
+    }
+    
     // Getter and Setter
+    
     public int getPoster() {
         return poster;
     }
@@ -96,11 +112,11 @@ public class Movie implements Parcelable {
         this.title = title;
     }
     
-    public String getYear() {
+    public int getYear() {
         return year;
     }
     
-    public void setYear(String year) {
+    public void setYear(int year) {
         this.year = year;
     }
     

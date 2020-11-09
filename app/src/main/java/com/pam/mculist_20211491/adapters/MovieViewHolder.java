@@ -11,13 +11,13 @@ import com.pam.mculist_20211491.R;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ListViewHolder extends RecyclerView.ViewHolder {
+public class MovieViewHolder extends RecyclerView.ViewHolder {
     
     ImageView imgPoster;
     TextView tvTitle, tvYear, tvDetails, tvDirector, tvStars, tvIndex;
     CircleImageView imgFavorite;
     
-    public ListViewHolder(@NonNull View itemView) {
+    public MovieViewHolder(@NonNull View itemView) {
         super(itemView);
         imgPoster = itemView.findViewById(R.id.img_item_poster);
         tvTitle = itemView.findViewById(R.id.tv_movie_title);

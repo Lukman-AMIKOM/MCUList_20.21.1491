@@ -17,14 +17,14 @@
     <string name="list">RecyclerView List</string>
     <string name="grid">RecyclerView Grid</string>
     <string name="about">About</string>
-    <string name="search">search</string>
+    <string name="search">Search by title, year, release date, director, or stars...</string>
     <string name="cardview">RecyclerView CardView</string>
     <string name="listview">ListView</string>
     <string name="custom_listview">Custom ListView</string>
     <string name="name">Lukman Hakim</string>
     <string name="email">lukman.hakim@students.amikom.ac.id</string>
     <string name="university">University of AMIKOM Yogyakarta</string>
-    <string name="informatics">Bachelor of Informatics</string>
+    <string name="bachelor_of_informatics">Bachelor of Informatics</string>
     <string name="nim">20.21.1491</string>
     <string name="splash_screen_mcu_logo">Splash Screen MCU Logo</string>
     <string name="list_">List</string>

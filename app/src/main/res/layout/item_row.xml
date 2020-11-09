@@ -7,7 +7,7 @@
         layout="@layout/item_movie"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="11dp" />
+        android:layout_margin="5dp" />
     
 <!--    I intentionally put the movie list index number to be about one quarter
         on top of the edge of the top left corner of the movie poster for my

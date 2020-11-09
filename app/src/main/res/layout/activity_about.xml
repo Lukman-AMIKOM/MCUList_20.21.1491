@@ -45,12 +45,12 @@
         <TextView
             android:id="@+id/tv_study_program"
             style="@style/TextViewAbout.SchoolInfo"
-            android:text="@string/informatics"
+            android:text="@string/bachelor_of_informatics"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_email"
-            app:layout_constraintVertical_bias="0.68"/>
+            app:layout_constraintVertical_bias="0.68" />
         
         <TextView
             android:id="@+id/tv_student_id"
@@ -64,9 +64,12 @@
         <TextView
             style="@style/TextViewAbout.SchoolInfo"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/university"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_student_id" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_student_id"
+            app:layout_constraintVertical_bias="0.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

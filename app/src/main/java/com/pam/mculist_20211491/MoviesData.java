@@ -28,7 +28,7 @@ public class MoviesData {
     public static final String PHASE_THREE = "Three";
     public static final String PHASE_FOUR = "Four";
     
-    static ArrayList<Movie> getListData(Context context, int resource) {
+    public static ArrayList<Movie> getListData(Context context, int resource) {
         InputStream inputStream = context.getResources().openRawResource(resource);
         String moviesJsonString = new Scanner(inputStream).useDelimiter("\\A").next();
         
@@ -47,7 +47,7 @@ public class MoviesData {
                 Movie movie = new Movie(
                         resId,
                         obj.getString(title),
-                        obj.getString(year),
+                        obj.getInt(year),
                         obj.getString(details) + obj.getString(date),
                         obj.getString(date),
                         obj.getString(director),

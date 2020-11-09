@@ -71,7 +71,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 .apply(new RequestOptions().override(255, 360))
                 .into(imgPoster);
         tvTitle.setText(movie.getTitle());
-        tvYear.setText(movie.getYear());
+        tvYear.setText(String.valueOf(movie.getYear()));
         tvDetails.setText(movie.getDetails());
         tvDirector.setText(movie.getDirector());
         tvStars.setText(movie.getStars());
