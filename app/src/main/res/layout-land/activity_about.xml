@@ -17,6 +17,7 @@
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:scaleType="centerInside"
+            android:src="@drawable/img_profile_photo"
             app:civ_border_color="@color/white"
             app:civ_border_width="5dp"
             app:civ_shadow="true"
@@ -25,73 +26,75 @@
             app:civ_shadow_radius="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.06"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.06"
             tools:src="@drawable/img_profile_photo" />
         
         <ImageView
             android:id="@+id/img_github_logo"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginBottom="28dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
             app:layout_constraintBottom_toBottomOf="@+id/img_profile_photo"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.625"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/img_profile_photo"
+            app:layout_constraintHorizontal_bias="0.728"
+            app:layout_constraintStart_toStartOf="@+id/img_profile_photo"
+            app:layout_constraintTop_toTopOf="@+id/img_profile_photo"
+            app:layout_constraintVertical_bias="0.847"
             tools:src="@drawable/github_logo_white"
             android:contentDescription="@string/github_link" />
-        
+    
         <TextView
             android:id="@+id/tv_name"
             style="@style/TextViewAbout.Name"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/name"
             android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_profile_photo" />
-        
+            app:layout_constraintStart_toEndOf="@+id/img_profile_photo"
+            app:layout_constraintTop_toTopOf="@+id/img_profile_photo" />
+    
         <TextView
             android:id="@+id/tv_email"
             style="@style/TextViewAbout"
             android:layout_marginTop="5dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/email"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_profile_photo"
             app:layout_constraintTop_toBottomOf="@+id/tv_name" />
-        
+    
         <TextView
             android:id="@+id/tv_study_program"
             style="@style/TextViewAbout.SchoolInfo"
+            android:layout_marginEnd="16dp"
             android:text="@string/bachelor_of_informatics"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/tv_student_id"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_email"
-            app:layout_constraintVertical_bias="0.68" />
-        
+            app:layout_constraintStart_toEndOf="@+id/img_profile_photo" />
+    
         <TextView
             android:id="@+id/tv_student_id"
             style="@style/TextViewAbout.SchoolInfo"
-            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/nim"
+            app:layout_constraintBottom_toTopOf="@+id/tv_university"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_study_program" />
-        
+            app:layout_constraintStart_toEndOf="@+id/img_profile_photo" />
+    
         <TextView
+            android:id="@+id/tv_university"
             style="@style/TextViewAbout.SchoolInfo"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="50dp"
             android:text="@string/university"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/img_profile_photo"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_student_id"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintStart_toEndOf="@+id/img_profile_photo" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     
     <color name="actionbar_color">#ec1d24</color>
-    <color name="main_background_color">#e8e8e8</color>
+    <color name="main_background_color">#E3ECFF</color>
     <color name="text_color">#404040</color>
     <color name="phase_one">#334cc6</color>
     <color name="phase_two">#9c0faf</color>

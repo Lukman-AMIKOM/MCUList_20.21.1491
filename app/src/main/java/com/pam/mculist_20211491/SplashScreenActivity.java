@@ -5,10 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 
 public class SplashScreenActivity extends AppCompatActivity {
     
-    private static final int SPLASH_DISPLAY_LENGTH = 1500;
+    private static final int SPLASH_DISPLAY_LENGTH = 1200;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +20,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
         
-        new Handler().postDelayed(new Runnable() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 Intent mainActivityIntent = new Intent(SplashScreenActivity.this, MainActivity.class);

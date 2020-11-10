@@ -13,7 +13,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.pam.mculist_20211491.Movie;
 import com.pam.mculist_20211491.R;
 
-import java.util.Comparator;
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
@@ -23,11 +22,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
     public static final String TYPE_GRID = "RecyclerView Grid";
     
     private final String type;
-    private final Comparator<Movie> movieComparator;
+    private final MyComparator movieComparator;
     
     private OnItemClickCallback onItemClickCallback;
     
-    public MovieAdapter(String type, Comparator<Movie> movieComparator) {
+    public MovieAdapter(String type, MyComparator movieComparator) {
         this.type = type;
         this.movieComparator = movieComparator;
     }
@@ -88,32 +87,32 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
         public int compare(Movie movie1, Movie movie2) {
             return movieComparator.compare(movie1, movie2);
         }
-    
+        
         @Override
         public void onChanged(int position, int count) {
             notifyItemRangeChanged(position, count);
         }
-    
+        
         @Override
         public boolean areContentsTheSame(Movie oldItem, Movie newItem) {
             return oldItem.equals(newItem);
         }
-    
+        
         @Override
         public boolean areItemsTheSame(Movie item1, Movie item2) {
             return item1.hashCode() == item2.hashCode();
         }
-    
+        
         @Override
         public void onInserted(int position, int count) {
             notifyItemRangeInserted(position, count);
         }
-    
+        
         @Override
         public void onRemoved(int position, int count) {
             notifyItemRangeRemoved(position, count);
         }
-    
+        
         @Override
         public void onMoved(int fromPosition, int toPosition) {
             notifyItemMoved(fromPosition, toPosition);
@@ -142,14 +141,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieViewHolder> {
     
     public void replaceAll(List<Movie> movies) {
         movieSortedList.beginBatchedUpdates();
-        movieSortedList.clear();
-        for (int i = movieSortedList.size() - 1 ; i >= 0; i--) {
+        for (int i = movieSortedList.size() - 1; i >= 0; i--) {
             final Movie movie = movieSortedList.get(i);
             if (!movies.contains(movie)) {
                 movieSortedList.remove(movie);
             }
         }
         movieSortedList.addAll(movies);
+        notifyItemRangeChanged(0, movies.size() - 1);
         movieSortedList.endBatchedUpdates();
     }
 }

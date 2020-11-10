@@ -30,6 +30,7 @@
     <string name="list_">List</string>
     <string name="grid_">Grid</string>
     <string name="cardview_">CardView</string>
+    <string name="github_link">GitHub link</string>
     
     <string-array name="sorter">
         <item>release date</item>

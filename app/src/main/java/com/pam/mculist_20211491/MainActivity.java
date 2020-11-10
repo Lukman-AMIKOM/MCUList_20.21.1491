@@ -31,15 +31,11 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.pam.mculist_20211491.adapters.MovieAdapter;
+import com.pam.mculist_20211491.adapters.MyComparator;
 import com.pam.mculist_20211491.adapters.OnItemClickCallback;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, BottomNavigationView.OnNavigationItemSelectedListener {
     
@@ -70,57 +66,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private SearchView searchView;
     private List<Movie> filteredMovieList;
     private String searchQuery;
-    
-    private final Comparator<Movie> RELEASE_DATE_COMPARATOR = new Comparator<Movie>() {
-        @Override
-        public int compare(Movie movie1, Movie movie2) {
-            String strDate1 = movie1.getReleaseDate();
-            String strDate2 = movie2.getReleaseDate();
-            
-            SimpleDateFormat sdf = new SimpleDateFormat("dd MMMMM yyyy");
-            try {
-                Date releaseDate1 = sdf.parse(strDate1);
-                Date releaseDate2 = sdf.parse(strDate2);
-                
-                if (Objects.requireNonNull(releaseDate1).before(releaseDate2)) {
-                    return -1;
-                } else {
-                    return 1;
-                }
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            return 0;
-        }
-    };
-    
-    private final Comparator<Movie> TITLE_COMPARATOR = new Comparator<Movie>() {
-        @Override
-        public int compare(Movie movie1, Movie movie2) {
-            String title1 = movie1.getTitle();
-            String title2 = movie2.getTitle();
-            
-            if (title1.compareToIgnoreCase(title2) < 0) {
-                return -1;
-            } else {
-                return 1;
-            }
-        }
-    };
-    
-    private final Comparator<Movie> CHRONOLOGICAL_COMPARATOR = new Comparator<Movie>() {
-        @Override
-        public int compare(Movie movie1, Movie movie2) {
-            int chronologicalIndex1 = movie1.getChronologicalIndex();
-            int chronologicalIndex2 = movie2.getChronologicalIndex();
-            
-            if (chronologicalIndex1 < chronologicalIndex2) {
-                return -1;
-            } else {
-                return 1;
-            }
-        }
-    };
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,7 +144,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         searchView.setQueryHint(getString(R.string.search));
         searchView.setOnQueryTextListener(this);
         searchView.setMaxWidth(Integer.MAX_VALUE);
-        TextView tvSearch = (TextView) searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        TextView tvSearch = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
         tvSearch.setTextSize(12);
         
         if (!TextUtils.isEmpty(searchQuery)) {
@@ -247,10 +192,10 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     }
     
     @Override
-    public boolean onQueryTextChange(String newText) {
-        filteredMovieList = filter(list, newText);
-        searchQuery = newText;
-        
+    public boolean onQueryTextChange(String query) {
+        filteredMovieList = filter(list, query);
+        searchQuery = query;
+    
         switch (selectedMode) {
             case RECYCLERVIEW_CARDVIEW_MODE:
                 cardMovieAdapter.replaceAll(filteredMovieList);
@@ -262,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 listMovieAdapter.replaceAll(filteredMovieList);
                 break;
         }
-        
+    
         rvMovies.scrollToPosition(0);
         return true;
     }
@@ -300,8 +245,8 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         tvViewType.setText(type);
         
         rvMovies.setLayoutManager(layoutManager);
-        setList(movieAdapter);
         rvMovies.setAdapter(movieAdapter);
+        setList(movieAdapter);
         
         movieAdapter.setOnItemClickCallback(new OnItemClickCallback() {
             @Override
@@ -366,14 +311,14 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
         }
     }
     
-    private Comparator<Movie> getComparator(String sorter) {
+    private MyComparator getComparator(String sorter) {
         switch (sorter) {
             case SORT_BY_DATE:
-                return RELEASE_DATE_COMPARATOR;
+                return new MyComparator(MyComparator.TYPE_RELEASE_DATE);
             case SORT_BY_TITLE:
-                return TITLE_COMPARATOR;
+                return new MyComparator(MyComparator.TYPE_TITLE);
             case SORT_BY_CHRONOLOGICAL:
-                return CHRONOLOGICAL_COMPARATOR;
+                return new MyComparator(MyComparator.TYPE_CHRONOLOGICAL);
         }
         return null;
     }
@@ -381,7 +326,7 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
     private static List<Movie> filter(List<Movie> movies, String query) {
         final String lowerCaseQuery = query.toLowerCase();
         final List<Movie> filteredMovieList = new ArrayList<>();
-        
+    
         for (Movie movie : movies) {
             final String title = movie.getTitle().toLowerCase();
             final String year = String.valueOf(movie.getYear());
@@ -395,7 +340,6 @@ public class MainActivity extends AppCompatActivity implements SearchView.OnQuer
                 filteredMovieList.add(movie);
             }
         }
-        
         return filteredMovieList;
     }
 }

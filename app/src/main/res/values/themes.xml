@@ -14,10 +14,6 @@
         <!-- Customize your theme here. -->
     </style>
     
-    <style name="UbuntuTextViewStyle" parent="android:Widget.TextView">
-        <item name="android:fontFamily">@font/ubuntu</item>
-    </style>
-    
     <style name="Sorter">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">13sp</item>
